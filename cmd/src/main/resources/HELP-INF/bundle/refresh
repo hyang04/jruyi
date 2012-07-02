@@ -1,0 +1,4 @@
+Usage: bundle:refresh [ID] ...
+
+Refresh the specified bundle(s) if present. Otherwise, refresh those bundles
+dependent on removal pending bundles.

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Copyright 2012 JRuyi.org
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+	    http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+<components xmlns="http://felix.apache.org/xmlns/scr/v1.1.0-felix">
+
+	<component name="org.jruyi.io.filter" configuration-policy="ignore">
+		<implementation class="org.jruyi.io.filter.FilterManager"/>
+		<service>
+			<provide interface="org.jruyi.io.filter.IFilterManager"/>
+		</service>
+	</component>
+
+	<component name="org.jruyi.io.channel" configuration-policy="ignore">
+		<implementation class="org.jruyi.io.channel.ChannelAdmin"/>
+		<service>
+			<provide interface="org.jruyi.io.channel.IChannelAdmin"/>
+		</service>
+		<reference
+			name="timeoutAdmin"
+			interface="org.jruyi.timeoutadmin.ITimeoutAdmin"
+			bind="setTimeoutAdmin"
+			unbind="unsetTimeoutAdmin"/>
+		<reference
+			name="worker"
+			interface="org.jruyi.workshop.IWorker"
+			bind="setWorker"
+			unbind="unsetWorker"/>
+	</component>
+
+	<component name="org.jruyi.io.tcpserver.tcpacceptor" configuration-policy="ignore">
+		<implementation class="org.jruyi.io.tcpserver.TcpAcceptor"/>
+		<service>
+			<provide interface="org.jruyi.io.tcpserver.ITcpAcceptor"/>
+		</service>
+		<reference
+			name="worker"
+			interface="org.jruyi.workshop.IWorker"
+			bind="setWorker"
+			unbind="unsetWorker"/>
+	</component>
+
+	<component name="org.jruyi.io.tcpserver"
+			configuration-policy="require" modified="update">
+		<implementation class="org.jruyi.io.tcpserver.TcpServer"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+		<reference
+			name="acceptor"
+			interface="org.jruyi.io.tcpserver.ITcpAcceptor"
+			bind="setTcpAcceptor"
+			unbind="unsetTcpAcceptor"/>
+	</component>
+	
+	<component factory="org.jruyi.io.tcpserver.factory">
+		<implementation class="org.jruyi.io.tcpserver.TcpServer"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+		<reference
+			name="acceptor"
+			interface="org.jruyi.io.tcpserver.ITcpAcceptor"
+			bind="setTcpAcceptor"
+			unbind="unsetTcpAcceptor"/>
+	</component>
+
+	<component name="org.jruyi.io.tcpclient.shortconn"
+			configuration-policy="require" modified="update">
+		<implementation class="org.jruyi.io.tcpclient.ShortConn"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component factory="org.jruyi.io.tcpclient.shortconn.factory">
+		<implementation class="org.jruyi.io.tcpclient.ShortConn"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component name="org.jruyi.io.tcpclient.connpool"
+			configuration-policy="require" modified="update">
+		<implementation class="org.jruyi.io.tcpclient.ConnPool"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+		<reference
+			name="worker"
+			interface="org.jruyi.workshop.IWorker"
+			bind="setWorker"
+			unbind="unsetWorker"/>
+	</component>
+
+	<component factory="org.jruyi.io.tcpclient.connpool.factory">
+		<implementation class="org.jruyi.io.tcpclient.ConnPool"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+		<reference
+			name="worker"
+			interface="org.jruyi.workshop.IWorker"
+			bind="setWorker"
+			unbind="unsetWorker"/>
+	</component>
+
+	<component name="org.jruyi.io.tcpclient.longconn"
+			configuration-policy="require" modified="update">
+		<implementation class="org.jruyi.io.tcpclient.LongConn"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component factory="org.jruyi.io.tcpclient.longconn.factory">
+		<implementation class="org.jruyi.io.tcpclient.LongConn"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component name="org.jruyi.io.udpserver"
+			configuration-policy="require" modified="update">
+		<implementation class="org.jruyi.io.udpserver.UdpServer"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component factory="org.jruyi.io.udpserver.factory">
+		<implementation class="org.jruyi.io.udpserver.UdpServer"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component name="org.jruyi.io.udpclient"
+			configuration-policy="require" modified="update">
+		<implementation class="org.jruyi.io.udpclient.UdpClient"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component factory="org.jruyi.io.udpclient.factory">
+		<implementation class="org.jruyi.io.udpclient.UdpClient"/>
+		<service>
+			<provide interface="org.jruyi.common.IService"/>
+			<provide interface="org.jruyi.me.IEndpoint"/>
+		</service>
+		<reference
+			name="filterManager"
+			interface="org.jruyi.io.filter.IFilterManager"
+			bind="setFilterManager"
+			unbind="unsetFilterManager"/>
+		<reference
+			name="buffer"
+			interface="org.jruyi.common.IBufferFactory"
+			policy="dynamic"
+			bind="setBufferFactory"
+			unbind="unsetBufferFactory"/>
+		<reference
+			name="channelAdmin"
+			interface="org.jruyi.io.channel.IChannelAdmin"
+			bind="setChannelAdmin"
+			unbind="unsetChannelAdmin"/>
+	</component>
+
+	<component name="org.jruyi.io.filter.textline">
+		<implementation class="org.jruyi.io.filter.TextLine"/>
+		<property name="jruyi.io.filter.id" value="org.jruyi.io.filter.textline"/>
+		<service>
+			<provide interface="org.jruyi.io.IFilter"/>
+		</service>
+	</component>
+
+	<component name="org.jruyi.io.filter.ssl" modified="modified">
+		<implementation class="org.jruyi.io.filter.Ssl"/>
+		<property name="jruyi.io.filter.id" value="org.jruyi.io.filter.ssl"/>
+		<property name="sslci.target" value="(jruyi.io.sslci.id=org.jruyi.io.sslci.null)"/>
+		<service>
+			<provide interface="org.jruyi.io.IFilter"/>
+		</service>
+		<reference
+			name="sslci"
+			interface="org.jruyi.io.ISslContextInfo"
+			bind="setSslContextInfo"
+			unbind="unsetSslContextInfo"
+			updated="updatedSslContextInfo"/>
+	</component>
+
+	<component name="org.jruyi.io.sslci.keystore">
+		<implementation class="org.jruyi.io.sslci.Keystore"/>
+		<property name="jruyi.io.sslci.id" value="org.jruyi.io.sslci.null"/>
+		<property name="certValidation" type="Boolean" value="false"/>
+		<service>
+			<provide interface="org.jruyi.io.ISslContextInfo"/>
+		</service>
+	</component>
+
+</components>

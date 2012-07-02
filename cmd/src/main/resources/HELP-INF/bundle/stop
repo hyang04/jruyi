@@ -1,0 +1,3 @@
+Usage: bundle:stop <ID> [ID1] ...
+
+Stop the specified bundles.

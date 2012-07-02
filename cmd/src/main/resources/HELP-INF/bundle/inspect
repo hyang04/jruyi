@@ -1,0 +1,3 @@
+Usage: bundle:inspect <ID>
+
+Print details of the specified bundle.
